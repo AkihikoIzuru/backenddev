@@ -1,19 +1,32 @@
-const express = require("express"); 
-const multer = require("multer"); 
-const { 
-getProducts, 
-createProduct, 
-getDetailProduct, 
-deleteProduct, 
-updateProduct, 
-} = require("../controllers/ProductController.js"); 
+const express = require("express");
+const multer = require("multer");
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
+const cloudinary = require("cloudinary").v2;
+const {
+  getProducts,
+  createProduct,
+  getDetailProduct,
+  deleteProduct,
+  updateProduct,
+} = require("../controllers/ProductController.js");
 
-const upload = multer({ dest: "uploads/products/" })
-const router = express. Router(); 
+// Konfigurasi penyimpanan menggunakan multer-storage-cloudinary
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: "products",
+    allowed_formats: ["jpg", "jpeg", "png"],
+  },
+});
 
-router.get("/", getProducts); 
-router.get("/:id", getDetailProduct); 
-router.delete("/:id", deleteProduct); 
-router.patch("/:id", upload.single("thumbnail"), updateProduct); 
-router.post("/", upload.single("thumbnail"), createProduct); 
+const upload = multer({ storage });
+
+const router = express.Router();
+
+router.get("/", getProducts);
+router.get("/:id", getDetailProduct);
+router.delete("/:id", deleteProduct);
+router.patch("/:id", upload.single("thumbnail"), updateProduct);
+router.post("/", upload.single("thumbnail"), createProduct);
+
 module.exports = router;
