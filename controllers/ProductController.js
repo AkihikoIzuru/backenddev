@@ -29,7 +29,7 @@ exports.createProduct = async (req, res) => {
   try {
     const product = new Product({
       ...req.body,
-      tumbnail: req.file?.path, // Ini sudah berisi secure_url dari Cloudinary
+      thumbnail: req.file?.path, // Ini sudah berisi secure_url dari Cloudinary
       cloudinaryId: req.file?.filename, // Ini adalah public_id dari Cloudinary
     });
 
