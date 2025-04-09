@@ -1,7 +1,6 @@
 const Product = require("../models/Product");
 const cloudinary = require("../config/cloudinary");
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
-const cloudinary = require("cloudinary").v2;
 
 exports.getProducts = async (req, res) => {
   try {
