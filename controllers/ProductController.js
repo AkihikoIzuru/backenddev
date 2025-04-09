@@ -26,11 +26,10 @@ exports.getDetailProduct = async (req, res) => {
 
 exports.createProduct = async (req, res) => {
   try {
-    const result = await cloudinary.uploader.upload(req.file.path);
     const product = new Product({
       ...req.body,
-      tumbnail: result?.secure_url,
-      cloudinaryId: result?.public_id,
+      tumbnail: req.file?.path, // Ini sudah berisi secure_url dari Cloudinary
+      cloudinaryId: req.file?.filename, // Ini adalah public_id dari Cloudinary
     });
 
     await product.save();
@@ -62,16 +61,25 @@ exports.updateProduct = async (req, res) => {
     if (!product) {
       return res.status(404).json({ message: "Product not found" });
     }
+
     console.log("req.file", req.file);
-    let result;
+
+    let secureUrl = product.thumbnail;
+    let publicId = product.cloudinaryId;
+
     if (req.file) {
+      // Hapus file lama di Cloudinary
       await cloudinary.uploader.destroy(product.cloudinaryId);
-      result = await cloudinary.uploader.upload(req.file.path);
+
+      // Gunakan file baru dari multer-storage-cloudinary
+      secureUrl = req.file.path; // ini secure_url
+      publicId = req.file.filename; // ini public_id
     }
+
     const updatedProduct = {
       ...req.body,
-      thumbnail: result?.secure_url || product.thumbnail,
-      cloudinaryId: result?.public_id || product.cloudinaryId,
+      thumbnail: secureUrl,
+      cloudinaryId: publicId,
     };
 
     product = await Product.findByIdAndUpdate(id, updatedProduct, {
