@@ -30,7 +30,7 @@ exports.createTransaction = async (req, res) => {
 
     const newTransaction = new Transaction({
       ...req.body,
-      midtrans_url: transactionUrl,
+      midtrans_url: transaction.token,
       transaction_id: order_id,
     });
     await newTransaction.save();
