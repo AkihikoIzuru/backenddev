@@ -22,6 +22,9 @@ exports.createTransaction = async (req, res) => {
       customer_details: {
         first_name: first_name,
       },
+      callbacks: {
+        finish: `${process.env.CLIENT_URL}/product`,
+      },
     };
 
     const transaction = await snap.createTransaction(parameter);
