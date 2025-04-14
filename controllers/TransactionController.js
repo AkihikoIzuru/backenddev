@@ -34,7 +34,7 @@ exports.createTransaction = async (req, res) => {
       transaction_id: order_id,
     });
     await newTransaction.save();
-    es.status(201).json(newTransaction);
+    res.status(201).json(newTransaction);
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
