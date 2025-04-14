@@ -42,3 +42,12 @@ exports.createTransaction = async (req, res) => {
     res.status(400).json({ message: err.message });
   }
 };
+
+exports.getAllOrders = async (req, res) => {
+  try {
+    const data = await Transaction.find();
+    res.status(200).json(data);
+  } catch (error) {
+    res.status(500).json({ message: error });
+  }
+};
