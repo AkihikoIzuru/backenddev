@@ -21,7 +21,7 @@ exports.createUser = async (req, res) => {
   exports.deleteUser = async (req, res) => {
     const { id } = req.params;
     try {
-      await new User.deleteOne({ _id: id });
+      await User.findByIdAndDelete(id);
       res.status(201).json({ message: "user deleted successfull" });
     } catch (err) {
       res.status(400).json({ message: err.message });
