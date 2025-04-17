@@ -23,7 +23,7 @@ exports.createTransaction = async (req, res) => {
         first_name: first_name,
       },
       callbacks: {
-        finish: `${process.env.CLIENT_URL}product`,
+        finish: `${process.env.CLIENT_URL}/product`,
       },
     };
 
